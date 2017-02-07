@@ -1,0 +1,44 @@
+sudo: required
+services:
+  - docker
+
+env:
+  global:
+    - WORKDIR=/io
+    - WHEELHOUSE=/io/wheels
+    - PYTHON_PREFIXES=/opt/python/cp3[56]*
+    - UPLOAD_IMAGE=continuumio/miniconda
+  matrix:
+    - BUILD_IMAGE=quay.io/pypa/manylinux1_x86_64 TEST_IMAGE=python:3
+
+
+install:
+  - docker pull $BUILD_IMAGE
+  - docker pull $TEST_IMAGE
+  - docker pull $UPLOAD_IMAGE
+
+script:
+  - |
+    set -e
+    docker run --rm \
+      -v ${PWD}:${WORKDIR} \
+      -e PYTHON_PREFIXES="${PYTHON_PREFIXES}" \
+      -e WORKDIR=${WORKDIR} \
+      -e WHEELHOUSE=${WHEELHOUSE} \
+      $BUILD_IMAGE ${WORKDIR}/scripts/build-manylinux-wheels.sh
+  - |
+    set -e
+    docker run --rm \
+      -v ${PWD}:${WORKDIR} \
+      -e WHEELHOUSE=${WHEELHOUSE} \
+      $TEST_IMAGE pip install -r $WORKDIR/requirements.txt --no-index --find-links $WHEELHOUSE
+  - |
+    set -e
+    # ANACONDA_TOKEN and ANACONDA_USER are set via travis settings.
+    docker run --rm \
+      -v ${PWD}:${WORKDIR} \
+      -e ANACONDA_TOKEN=${ANACONDA_TOKEN} \
+      -e ANACONDA_USER=${ANACONDA_USER} \
+      -e ANACONDA_LABEL=${TRAVIS_BRANCH} \
+      -e WHEELHOUSE=${WHEELHOUSE} \
+      $UPLOAD_IMAGE ${WORKDIR}/scripts/upload-wheels.sh

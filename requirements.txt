@@ -1,0 +1,2 @@
+# Demo package
+omp-thread-count
