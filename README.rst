@@ -4,7 +4,8 @@ Anaconda-Manylinux builder
 
 This repository contains scripts that helps building manylinux wheels and
 upload them to `Anaconda.org`_. `Anaconda.org`_ allows you to host `Conda`_
-packages as well other packages types like wheels.
+packages as well other packages types like wheels. By default builds Manylinux
+wheels for Python 3.5 and Python 3.6.
 
 **How does it work?** We use `Travis CI`_ to build `Manylinux`_ wheels and
 upload them to `Anaconda.org`_.
@@ -91,6 +92,11 @@ Additionaly you can debug the package building by starting the docker container
 and interacting directly with the system::
 
   docker run -it --rm -v $PWD:/io -w /io quay.io/pypa/manylinux1_x86_64 bash
+
+If you don't want to use manylinux wheels you can customize the build image in
+the ``.travis.yml`` file and use ``scripts/build-wheels.sh`` rather than
+``scripts/build-manylinux-wheels.sh``. You can also changes the
+``PYTHON_PREFIXES`` to target other python versions for manylinux wheels.
 
 Acknowledgements
 ----------------
