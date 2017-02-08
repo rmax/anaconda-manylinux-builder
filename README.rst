@@ -95,8 +95,8 @@ and interacting directly with the system::
 
 If you don't want to use manylinux wheels you can customize the build image in
 the ``.travis.yml`` file and use ``scripts/build-wheels.sh`` rather than
-``scripts/build-manylinux-wheels.sh``. You can also changes the
-``PYTHON_PREFIXES`` to target other python versions for manylinux wheels.
+``scripts/build-manylinux-wheels.sh``. You can also change the
+``PYTHON_PREFIXES`` variable to target other python versions for manylinux wheels.
 
 Acknowledgements
 ----------------
