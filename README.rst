@@ -76,14 +76,13 @@ Troubleshooting
 
 Building may fail if the package requires compilation and depends on libraries
 not installed on the system. For example, if the package depends on
-``cryptography`` you need to install latest ``openssl`` and ``libffi`` library
-headers and set proper compilation flags, that is, edit ``build-setup.sh`` with
-the following content::
+``libffi`` you need to install the library and optionally set the proper
+compilation flags, that is, edit ``build-setup.sh`` with the following
+content::
 
-  yum install -y openssl101e-devel libffi-devel
+  yum install -y libffi-devel
 
-  export CFLAGS="${CFLAGS} $(pkg-config --cflags-only-I openssl101e)"
-  export LDFLAGS="${LDFLAGS} $(pkg-config --libs-only-L openssl101e)"
+  export CFLAGS="${CFLAGS} $(pkg-config --cflags-only-I libffi)"
 
 Additionaly you can debug the package building by starting the docker container
 and interacting directly with the system::
@@ -94,6 +93,20 @@ If you don't want to use manylinux wheels you can customize the build image in
 the ``.travis.yml`` file and use ``scripts/build-wheels.sh`` rather than
 ``scripts/build-manylinux-wheels.sh``. You can also change the
 ``PYTHON_PREFIXES`` variable to target other python versions for manylinux wheels.
+
+Caveats
+-------
+
+Not all packages can be converted into manylinux wheels. One example is
+``cryptography`` which fails with an ``ImportError``. If you have this issue
+you can either:
+
+* Build non-manylinux wheels in your target docker image so you ensure wheel
+  compatibility.
+* Remove the package from your ``requirements.txt`` to avoid building it as
+  wheel.
+* Or remove the package from `Anaconda.org`_. This in case the package is a
+  sub-dependency.
 
 Acknowledgements
 ----------------
