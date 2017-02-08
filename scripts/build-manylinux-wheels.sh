@@ -5,7 +5,11 @@
 # Environment variables are the same as for build-wheels.sh and additionally the following:
 # - PYTHON_PREFIXES : list of python environments in the docker image, default to all available.
 #
-set -eux
+set -ex
+
+source $WORKDIR/build-setup.sh
+
+set -u
 
 PYTHON_PREFIXES=${PYTHON_PREFIXES:-"/opt/python/*"}
 # Expand glob.

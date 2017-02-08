@@ -1,2 +1,2 @@
 # Demo package
-omp-thread-count
+scrapy
