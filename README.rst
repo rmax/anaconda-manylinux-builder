@@ -14,7 +14,7 @@ upload them to `Anaconda.org`_.
 you are not convinced, watch this great presentation: `Shipping Software to Users
 With Python <https://www.youtube.com/watch?v=5BqAeN-F9Qs>`_
 
-**Why Anaconda.org?** I'm fan of `Conda`_ but in my day to day work the
+**Why Anaconda.org?** I'm a fan of `Conda`_ but in my day to day work the
 deployment is done via standard python packaging tools (that is ``pip``).
 Hosting wheels in `Anaconda.org`_ is very convenient to distribute wheels for
 specific packages versions to developers and build systems. The alternative is
