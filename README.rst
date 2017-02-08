@@ -70,6 +70,28 @@ to automatically search for packages in your `Anaconda.org`_ account::
   package1
   package2
 
+Troubleshooting
+---------------
+
+Building may fail if the package requires compilation and depends on libraries
+not installed on the system. For example, if the package depends on
+``cryptography`` you need to install latest ``openssl`` and ``libffi`` library
+headers and set proper compilation flags, that is, edit ``build-setup.sh`` with
+the following content::
+
+  yum install -y openssl101e-devel libffi
+
+  export CFLAGS="${CFLAGS} $(pkg-config --cflags openssl101e)"
+  export CFLAGS="${CFLAGS} $(pkg-config --cflags libffi)"
+  
+  export LDFLAGS="${LDFLAGS} $(pkg-config --libs openssl101e)"
+  export LDFLAGS="${LDFLAGS} $(pkg-config --libs libffi)"
+
+Additionaly you can debug the package building by starting the docker container
+and interacting directly with the system::
+
+  docker run -it --rm -v $PWD:/io -w /io quay.io/pypa/manylinux1_x86_64 bash
+
 Acknowledgements
 ----------------
 
