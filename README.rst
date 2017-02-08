@@ -80,13 +80,10 @@ not installed on the system. For example, if the package depends on
 headers and set proper compilation flags, that is, edit ``build-setup.sh`` with
 the following content::
 
-  yum install -y openssl101e-devel libffi
+  yum install -y openssl101e-devel libffi-devel
 
-  export CFLAGS="${CFLAGS} $(pkg-config --cflags openssl101e)"
-  export CFLAGS="${CFLAGS} $(pkg-config --cflags libffi)"
-  
-  export LDFLAGS="${LDFLAGS} $(pkg-config --libs openssl101e)"
-  export LDFLAGS="${LDFLAGS} $(pkg-config --libs libffi)"
+  export CFLAGS="${CFLAGS} $(pkg-config --cflags-only-I openssl101e)"
+  export LDFLAGS="${LDFLAGS} $(pkg-config --libs-only-L openssl101e)"
 
 Additionaly you can debug the package building by starting the docker container
 and interacting directly with the system::
